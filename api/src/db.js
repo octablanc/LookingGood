@@ -37,6 +37,9 @@ const { Diet_type, Recipe, Step } = sequelize.models;
 Recipe.hasMany(Step, { foreignKey: "recipeId" });
 Step.belongsTo(Recipe);
 
+Recipe.belongsToMany(Diet_type, { through: 'RecipeXDiet' });
+Diet_type.belongsToMany(Recipe, { through: 'RecipeXDiet' });
+
 module.exports = {
   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
   conn: sequelize,     // para importart la conexión { conn } = require('./db.js');
