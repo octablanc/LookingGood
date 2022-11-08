@@ -1,9 +1,11 @@
 import './App.css';
+import { Route } from "react-router-dom";
+import FormRecipe from './components/FormRecipe';
 
 function App() {
   return (
     <div className="App">
-      <h1>Henry Food</h1>
+      <Route exact path="/create" render={()=> FormRecipe()}/>
     </div>
   );
 }
