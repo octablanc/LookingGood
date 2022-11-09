@@ -26,4 +26,5 @@ export default function FormRecipe(){
             <button type="submit">Create Recipe</button>
         </RecipeFormS>
     )
+    
 }
