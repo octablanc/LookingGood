@@ -23,8 +23,11 @@ module.exports = (sequelize) => {
 
     health_score: {
       type: DataTypes.INTEGER
-    }
+    },
 
+    image : {
+      type: DataTypes.STRING(300)
+    }
     // Steps will be a new table
   });
 };

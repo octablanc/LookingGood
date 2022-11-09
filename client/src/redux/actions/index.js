@@ -4,7 +4,7 @@ export const GET_ALL_DIET_TYPES = "GET_ALL_DIET_TYPES";
 
 export const getAllMovies = (name) => {
     return async function(dispatch){
-        return fetch("http://localhost:3000/recipes?name=" + name? name: "")
+        return fetch("http://localhost:3001/recipes?name=" + name? name: "")
         .then( (response)=> response.json() )
         .then( (data)=> dispatch({type: GET_ALL_RECIPES, payload: data}) );
     }
@@ -12,7 +12,7 @@ export const getAllMovies = (name) => {
 
  export const getAllDietTypes = () => {
     return async function(dispatch){
-        return fetch("http://localhost:3000/diet_types")
+        return fetch("http://localhost:3001/diet_types")
         .then( (response)=> response.json() )
         .then( (data)=> dispatch({type: GET_ALL_DIET_TYPES, payload: data}) );
     }
