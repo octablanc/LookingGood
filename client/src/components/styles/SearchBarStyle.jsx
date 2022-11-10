@@ -17,10 +17,11 @@ const SearchBarS = styled.div`
         outline: none;
         border-radius: 20px;
         font-size: 20px;
+        box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
     }
 
     button {
-        background-color: #4b4b4b;
+        background-color: #339e85;
         border: none;
         position: absolute;
         right: 0px;
@@ -31,9 +32,10 @@ const SearchBarS = styled.div`
         color: white;
         font-size: 20px;
         border-radius: 20px;
+        transition: 0.2s;
 
         :hover {
-            background-color: #258770;
+            background-color: #5c5c5c;
         }
     }
 `;

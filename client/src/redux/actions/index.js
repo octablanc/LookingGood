@@ -1,5 +1,6 @@
 export const GET_ALL_RECIPES = "GET_ALL_RECIPES";
 export const GET_ALL_DIET_TYPES = "GET_ALL_DIET_TYPES";
+export const CHANGE_PAGE = "CHANGE_PAGE";
 
 export const getAllRecipes = (name) => {
     return async function(dispatch){
@@ -11,9 +12,10 @@ export const getAllRecipes = (name) => {
         ).then((responses)=> {
             var payload = [];
 
-            payload = [...responses[0]];
+            payload = Array.isArray(responses[0])? responses[0] : [];
+            console.log(payload);
 
-            var recipesFromExternalApiParsed = responses[1] && responses[1].results.map((recipe)=> {
+            var recipesFromExternalApiParsed = responses[1].results && responses[1].results.map((recipe)=> {
                 return {
                     Id: recipe.id,
                     name: recipe.title,
@@ -25,7 +27,7 @@ export const getAllRecipes = (name) => {
                 }
             });
 
-            payload = [...payload, ...recipesFromExternalApiParsed];
+            // payload = [...payload, ...recipesFromExternalApiParsed];
 
             dispatch({type: GET_ALL_RECIPES, payload});
         });
@@ -39,3 +41,7 @@ export const getAllRecipes = (name) => {
         .then( (data)=> dispatch({type: GET_ALL_DIET_TYPES, payload: data}) );
     }
  };
+
+ export const changePage = (page)=> {
+    return { type: CHANGE_PAGE, payload: page}
+ }

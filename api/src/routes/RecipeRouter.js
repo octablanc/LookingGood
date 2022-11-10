@@ -6,22 +6,44 @@ const { Op, Sequelize } = require('sequelize');
 recipeRouter.get('/', async(req, res)=>{
     try {
         const { name } = req.query;
+
+        console.log(name);
         const result = await Recipe.findAll(
+            {
+                where: name? {
+                    name: {
+                        [Op.match]: Sequelize.fn('to_tsquery', name.split(" ").join(" & "))
+                    }
+                } : {}
+            }
+        );
+
+        if(result.length)
+            return res.send(result);
+        throw new Error('No recipe found');
+    } catch (error) {
+        return res.status(404).send({ error: error.message});
+    }
+});
+
+recipeRouter.get('/:id', async(req, res)=>{
+    try {
+        const { id } = req.params;
+        const result = await Recipe.findByPk(
+            id,
             {
                 include: [
                     {
                         model: Step,
                         attributes: {exclude: ['recipeId']}
                     }
-                ],
-                where: name? {
-                    name: {
-                        [Op.match]: Sequelize.fn('to_tsquery', name.replace(' ', ' & '))
-                    }
-                } : {}
+                ]
             }
         );
-        return res.send(result.length? result : { message: 'No recipe found'});
+        
+        if(result)
+            return res.send(result);
+        throw new Error('No recipe found');
     } catch (error) {
         return res.status(404).send({ error: error.message});
     }
