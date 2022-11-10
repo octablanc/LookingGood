@@ -24,6 +24,7 @@ recipeRouter.get('/', async(req, res)=>{
     } catch (error) {
         return res.status(404).send({ error: error.message});
     }
+    
 });
 
 recipeRouter.get('/:id', async(req, res)=>{
