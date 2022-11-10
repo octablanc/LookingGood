@@ -1,5 +1,6 @@
 import './App.css';
 import { Route } from "react-router-dom";
+import Header from "./components/Header";
 import NavBar from './components/NavBar';
 import Home from './components/Home';
 import FormRecipe from './components/FormRecipe';
@@ -7,12 +8,18 @@ import FormRecipe from './components/FormRecipe';
 function App() {
   return (
     <div className="App">
-      <header></header>
-      <Route path='/' render={()=> NavBar()}/>
+      <Header/>
+      <Route path='/'>
+        <NavBar/>
+      </Route>
 
-      <Route exact path='/home' render={()=> Home()}/>
+      <Route exact path='/home'>
+        <Home/>
+      </Route>
 
-      <Route exact path='/create' render={()=> FormRecipe()}/>
+      <Route exact path='/create'> 
+        <FormRecipe/>
+      </Route>
     </div>
   );
 }

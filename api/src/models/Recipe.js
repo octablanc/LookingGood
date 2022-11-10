@@ -25,7 +25,7 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER
     },
 
-    image : {
+    image: {
       type: DataTypes.STRING(300)
     }
     // Steps will be a new table

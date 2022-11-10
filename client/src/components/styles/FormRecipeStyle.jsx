@@ -6,7 +6,7 @@ const RecipeFormS = styled.form`
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    width: 300px;
+    width: 600px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     color: #575757;
 
@@ -40,6 +40,27 @@ const RecipeFormS = styled.form`
         :hover {
             color: white;
             background-color: #32ac90;
+        }
+    }
+
+    div {
+        display: flex;
+        flex-wrap: wrap;
+
+        div {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            input[type="checkbox"] {
+                position: absolute;
+                height: 15px;
+                width: 15px;
+                cursor: pointer;
+                top: -8px;
+            }
         }
     }
 `;

@@ -1,11 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import RecipeFormS from "./styles/FormRecipeStyle.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllDietTypes } from '../redux/actions/index';
 
 export default function FormRecipe(){
-    var DietTypes = [];
+    const { fields, setFields } = useState({
+        name: "",
+        dish_summary: "",
+        health_score: 0,
+    })
 
+    const DietTypes = useSelector((state)=> state.diet_types);
+    const dispatch = useDispatch();
     useEffect(()=>{
-        console.log("Hola");
+        dispatch(getAllDietTypes());
     }, []);
 
     return (
@@ -19,10 +27,16 @@ export default function FormRecipe(){
             <span>Health Score</span>
             <input type="text" name="health_score"/>
 
-            <select name="cars" id="cars">
-                {DietTypes.map((diet_type)=> <option value={diet_type.Id}>{diet_type.name}</option>)}
-            </select>
-
+            <span>Diet Type</span>
+            <div>
+                {DietTypes.map((diet_type)=> (
+                    <div>
+                        <label for={diet_type.name}>{diet_type.name}
+                        <input type="checkbox" name={diet_type.name} value={diet_type.id}/>
+                        </label>
+                    </div>
+                ))}
+            </div>
             <button type="submit">Create Recipe</button>
         </RecipeFormS>
     )
