@@ -1,19 +1,27 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import HeaderS from "./styles/HeaderStyle";
+import { useDispatch, useSelector } from "react-redux";
+import { clearRecipes, changePage } from "../redux/actions";
 
 export default function H() {
+    let history = useHistory();
+    const page = useSelector((state)=> state.page);
+    const dispatch = useDispatch();
+
+    function handleClick() {
+        dispatch(changePage(1));
+        dispatch(clearRecipes());
+        history.push("/home");
+    }
+
     return (
         <header>
-            <div>
-                <span style={{fontSize: "30px"}}>Recipes Page</span>
-                <hr style={{
-                    width: "400px",
-                    height: "3px",
-                    backgroundColor: "white"
-                }}></hr>
-                <span style={{ 
-                    fontSize: "100px",
-                }}>Looking Good</span>
-            </div>
+            <HeaderS>
+                <span id="recipesPage">Recipes Page</span>
+                <hr></hr>
+                <span id="title" onClick={()=> handleClick()}>Looking Good</span>
+            </HeaderS>
         </header>
     )
 }

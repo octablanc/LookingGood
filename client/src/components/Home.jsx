@@ -5,17 +5,15 @@ import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 import MainContentS from "./styles/MainContent";
 import RecipeCard from "./RecipeCard";
+import Spinner from "./Spinner";
 
 export default function Home(){
     const recipes = useSelector((state)=> state.recipes);
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if(!recipes.length)
-            dispatch(getAllRecipes());
+        dispatch(getAllRecipes());
     }, [dispatch]);
-
-    // console.log(recipes);
 
     var pagina = useSelector((state)=> state.page);
 
@@ -25,6 +23,7 @@ export default function Home(){
         if(recipes[i])
             toShow.push(recipes[i]);
     }
+    console.log(toShow.length);
 
     return (
         <>
@@ -32,7 +31,7 @@ export default function Home(){
             <Pagination/>
                 <MainContentS>
                     {
-                        toShow.length? toShow.map((recipe)=> (<RecipeCard recipe={recipe}/>)) : "No hay un carajo"
+                        toShow.length? toShow.map((recipe)=> (<RecipeCard recipe={recipe} key={recipe.Id}/>)) : <Spinner/>
                     }
                 </MainContentS>
             <Pagination/>

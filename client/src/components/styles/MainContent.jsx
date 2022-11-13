@@ -13,7 +13,8 @@ const MainContentS = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-content: flex-start;
+    align-content: center;
+    
     width: 90%;
     max-width: 1500px;
     min-height: 800px;

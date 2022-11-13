@@ -11,7 +11,7 @@ const PaginationS = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 30px;
+        width: 32px;
         height: 30px;
         background-color: #339e85;
         box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;        
@@ -30,7 +30,7 @@ const PaginationS = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 40px;
+        width: 42px;
         height: 40px;
         background-color: #292929;
         color: white;

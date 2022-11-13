@@ -1,6 +1,6 @@
 const express = require('express');
 const recipeRouter = express.Router();
-const { Recipe, Step } = require('../db');
+const { Recipe, Step, DietType } = require('../db');
 const { Op, Sequelize } = require('sequelize');
 
 recipeRouter.get('/', async(req, res)=>{
@@ -35,7 +35,12 @@ recipeRouter.get('/:id', async(req, res)=>{
                 include: [
                     {
                         model: Step,
-                        attributes: {exclude: ['recipeId']}
+                        attributes: { exclude: ['recipeId'] }
+                    },
+                    {
+                        model: DietType,
+                        attributes: ["name"],
+                        through : { attributes: [] }
                     }
                 ]
             }
@@ -45,7 +50,7 @@ recipeRouter.get('/:id', async(req, res)=>{
             return res.send(result);
         throw new Error('No recipe found');
     } catch (error) {
-        return res.status(404).send({ error: error.message});
+        return res.status(404).send({ error: error.message });
     }
 });
 

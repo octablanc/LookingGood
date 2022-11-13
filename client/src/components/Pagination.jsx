@@ -28,16 +28,16 @@ export default function Pagination({ page }){
 
     return (
         <PaginationS>
-            <div className="previous">
-                <span id="previous" onClick={(event)=> handlerChange(event.target.id)}>{"<"}</span>
+            <div className="previous" id="previous" onClick={(event)=> {handlerChange(event.target.id)}}>
+                <span id="previous">{"<"}</span>
             </div>
 
             <div id="page">
                 <span>{page}</span>
             </div>
 
-            <div className="next">
-                <span id="next" onClick={(event)=> handlerChange(event.target.id)}>{">"}</span>
+            <div className="next" id="next" onClick={(event)=> handlerChange(event.target.id)}>
+                <span id="next">{">"}</span>
             </div>
         </PaginationS>
     );

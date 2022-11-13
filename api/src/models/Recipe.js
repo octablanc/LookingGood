@@ -31,13 +31,3 @@ module.exports = (sequelize) => {
     // Steps will be a new table
   });
 };
-
-
-/*
-ID: *
-Nombre *
-Resumen del plato *
-Nivel de "comida saludable" (health score)
-Paso a paso
-
-*/

@@ -10,6 +10,13 @@ const RecipeCardS = styled.div`
     height: 230px;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    cursor: pointer;
+    transition: 0.2s;
+
+    :hover {
+        background-color: #292929;
+        color: white;
+    }
 
     .picture {
         background-size: 1000px;
