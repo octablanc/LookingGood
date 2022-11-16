@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import HeaderS from "./styles/HeaderStyle";
 import { useDispatch, useSelector } from "react-redux";
-import { clearRecipes, changePage } from "../redux/actions";
+import { clearRecipes, changePage, getAllRecipes } from "../redux/actions";
 
 export default function H() {
     let history = useHistory();
@@ -12,6 +12,7 @@ export default function H() {
     function handleClick() {
         dispatch(changePage(1));
         dispatch(clearRecipes());
+        dispatch(getAllRecipes());
         history.push("/home");
     }
 

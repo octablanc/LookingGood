@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import SearchBarS from "./styles/SearchBarStyle";
 import { useDispatch } from "react-redux";
-import { getAllRecipes } from "../redux/actions/index";
+import { getAllRecipes, clearRecipes } from "../redux/actions/index";
+import { useHistory } from "react-router-dom";
 
 export default function SearchBar(){
     const [ inputValue, setInputValue ] = useState("");
     const dispatch = useDispatch();
+    let history = useHistory();
 
     function handlerChange(event){
         setInputValue(event.target.value);
@@ -14,7 +16,12 @@ export default function SearchBar(){
     return (
         <SearchBarS>
             <input type="text" key="input-search" value={inputValue} onChange={(event)=> handlerChange(event)}/>
-            <button onClick={()=> dispatch(getAllRecipes(inputValue))}>Search</button>
+            <button onClick={()=> {
+                setInputValue("");
+                dispatch(clearRecipes());
+                dispatch(getAllRecipes(inputValue));
+                history.push("/home");
+            }}>Search</button>
         </SearchBarS>
     );
 }

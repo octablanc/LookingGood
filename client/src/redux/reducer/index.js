@@ -1,23 +1,23 @@
-// Importa las action types acá
 import {
   GET_ALL_RECIPES,
   GET_ALL_DIET_TYPES,
   GET_RECIPE,
   CLEAR_RECIPE,
   CLEAR_RECIPES,
-  CHANGE_PAGE 
+  CHANGE_PAGE,
+  CHANGE_OPTIONS
 } from '../actions/index.js';
 
 const initialState = {
   recipes: [],
   diet_types: [],
   recipeDetail: {},
+  options: { ascendant: false, descending: false, diet: ""},
   page: 1
 };
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    // Acá va tu código:
     case GET_ALL_RECIPES:
       return {
         ...state,
@@ -54,6 +54,8 @@ const rootReducer = (state = initialState, action) => {
         page: action.payload
       }
 
+    case CHANGE_OPTIONS:
+      return {...state, options: action.options}
     default:
       return {...state};
   }

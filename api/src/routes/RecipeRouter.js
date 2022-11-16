@@ -1,22 +1,12 @@
 const express = require('express');
 const recipeRouter = express.Router();
-const { Recipe, Step, DietType } = require('../db');
-const { Op, Sequelize } = require('sequelize');
+const { getRecipes, getRecipeByPK } = require('../controllers/RecipeController');
 
-recipeRouter.get('/', async(req, res)=>{
+recipeRouter.get('/', async (req, res)=>{
     try {
         const { name } = req.query;
 
-        console.log(name);
-        const result = await Recipe.findAll(
-            {
-                where: name? {
-                    name: {
-                        [Op.match]: Sequelize.fn('to_tsquery', name.split(" ").join(" & "))
-                    }
-                } : {}
-            }
-        );
+        const result = await getRecipes(name);
 
         if(result.length)
             return res.send(result);
@@ -26,25 +16,10 @@ recipeRouter.get('/', async(req, res)=>{
     }
 });
 
-recipeRouter.get('/:id', async(req, res)=>{
+recipeRouter.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const result = await Recipe.findByPk(
-            id,
-            {
-                include: [
-                    {
-                        model: Step,
-                        attributes: { exclude: ['recipeId'] }
-                    },
-                    {
-                        model: DietType,
-                        attributes: ["name"],
-                        through : { attributes: [] }
-                    }
-                ]
-            }
-        );
+        const result = await getRecipeByPK(id);
         
         if(result)
             return res.send(result);

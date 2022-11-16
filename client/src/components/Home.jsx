@@ -6,35 +6,52 @@ import Pagination from "./Pagination";
 import MainContentS from "./styles/MainContent";
 import RecipeCard from "./RecipeCard";
 import Spinner from "./Spinner";
+import Options from "./Options";
 
-export default function Home(){
-    const recipes = useSelector((state)=> state.recipes);
+export default function Home() {
     const dispatch = useDispatch();
-
-    useEffect(()=>{
-        dispatch(getAllRecipes());
-    }, [dispatch]);
-
-    var pagina = useSelector((state)=> state.page);
-
+    var recipes = useSelector((state) => state.recipes);
+    const options = useSelector((state) => state.options);
+    var pagina = useSelector((state) => state.page);
     var toShow = [];
 
-    for(var i = 12*pagina-12; i<12*pagina; i++){
-        if(recipes[i])
+    useEffect(() => {
+        // if(!recipes.length)
+            dispatch(getAllRecipes());
+    }, [dispatch]);
+
+    if(options.diet)
+        recipes = recipes.filter((recipe)=> recipe.DietTypes.reduce(
+            (result, value) => {
+                if(value.includes(options.diet))
+                    result = true;
+                return result;
+            }, false)
+        );
+
+    if(options.ascendant)
+        recipes = recipes.sort((a, b) => a.name > b.name? 1: -1);
+    else if(options.descending)
+        recipes = recipes.sort((a, b) => a.name < b.name? 1: -1);
+
+    for (var i = 12 * pagina - 12; i < 12 * pagina; i++) {
+        if (recipes[i])
             toShow.push(recipes[i]);
     }
-    console.log(toShow.length);
 
     return (
-        <>
-            <SearchBar/>
-            <Pagination/>
-                <MainContentS>
-                    {
-                        toShow.length? toShow.map((recipe)=> (<RecipeCard recipe={recipe} key={recipe.Id}/>)) : <Spinner/>
-                    }
-                </MainContentS>
-            <Pagination/>
+        <>  
+            <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
+                {/* <Options/> */}
+                <SearchBar/>
+            </div>
+            <Pagination />
+            <MainContentS>
+                {
+                    toShow.length ? toShow.map((recipe) => (<RecipeCard recipe={recipe} key={recipe.Id} />)) : <Spinner />
+                }
+            </MainContentS>
+            <Pagination />
         </>
     );
 }

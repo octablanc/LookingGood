@@ -15,6 +15,7 @@ const RecipeDetailS = styled.div`
     justify-content: center;
     align-content: flex-start;
     width: 90%;
+    min-height: 700px;
     max-width: 1500px;
     min-width: 1300px;
     border-radius: 10px;
