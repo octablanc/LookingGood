@@ -61,7 +61,6 @@ const RecipeFormS = styled.form`
                 cursor: pointer;
                 top: -8px;
             }
-            
         }
     }
 `;
