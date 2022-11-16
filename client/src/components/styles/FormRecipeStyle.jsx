@@ -65,4 +65,4 @@ const RecipeFormS = styled.form`
     }
 `;
 
-export default RecipeFormS;
+export default RecipeFormS; 
