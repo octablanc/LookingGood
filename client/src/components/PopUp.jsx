@@ -84,7 +84,7 @@ export default function PopUp({ deactive }){
         })
     }
 
-    console.log(recipe);
+    // console.log(recipe);
 
     return (
         <PopUpS>
