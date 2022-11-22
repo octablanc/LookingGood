@@ -8,7 +8,7 @@ export default function Step({ number, step }){
                 <span>{number}</span>
             </div>
             <div>
-                <span>{step}</span>
+                {step}
             </div>
         </StepS>
     );

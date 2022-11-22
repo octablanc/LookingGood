@@ -3,7 +3,8 @@ import styled from "styled-components";
 const SearchBarS = styled.div`
     margin-top: 40px;
     display: flex;
-    width: 1000px;
+    width: 80%;
+    max-width: 1000px;
     position: relative;
 
     input {

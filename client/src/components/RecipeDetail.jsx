@@ -40,7 +40,7 @@ export default function RecipeDetail(){
                         <h3>Diets</h3>
                         <div id="diets">
                             {
-                                recipe.DietTypes && recipe.DietTypes.map((type, index)=> <span key={index+1} style={{paddingLeft: "10px"}}>{type.name}.</span>)
+                                recipe.DietTypes && recipe.DietTypes.map((type, index)=> <span key={index+1} style={{paddingLeft: "10px"}}>{type.name.charAt(0).toUpperCase() + type.name.slice(1)}.</span>)
                             }
                         </div>
 

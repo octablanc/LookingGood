@@ -4,6 +4,7 @@ const StepS = styled.div`
     margin-top: 20px;
     padding: 10px;
     padding-left: 20px;
+    padding-right: 30px;
     display: flex;
     text-align: left;
     align-items: center;
@@ -24,6 +25,14 @@ const StepS = styled.div`
         align-items: center;
         margin-right: 20px;
     }
+
+    div {
+        span {
+
+            display: block;
+        }
+    }
+
 `;
 
 export default StepS;

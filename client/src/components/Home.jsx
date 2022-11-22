@@ -16,18 +16,14 @@ export default function Home() {
     var toShow = [];
 
     useEffect(() => {
-        // if(!recipes.length)
-            dispatch(getAllRecipes());
-    }, [dispatch]);
+        dispatch(getAllRecipes());
+    }, []);
 
     if(options.diet)
-        recipes = recipes.filter((recipe)=> recipe.DietTypes.reduce(
-            (result, value) => {
-                if(value.includes(options.diet))
-                    result = true;
-                return result;
-            }, false)
-        );
+        recipes = recipes.filter((recipe)=> recipe.DietTypes.find((e)=> e.name === options.diet));
+
+    console.log(options.diet.charAt(0).toUpperCase() + options.diet.slice(1));
+    console.log(recipes);
 
     if(options.ascendant)
         recipes = recipes.sort((a, b) => a.name > b.name? 1: -1);
@@ -41,11 +37,21 @@ export default function Home() {
 
     return (
         <>  
-            <div style={{display: "flex", flexDirection: "row", alignItems: "center"}}>
-                {/* <Options/> */}
-                <SearchBar/>
+            <SearchBar/>
+            <div style={{
+                display: "flex", 
+                flexDirection: "row",
+                justifyContent: "center", 
+                alignItems: "center", 
+                position: "relative", 
+                width: "100%", 
+                maxWidth: "1665px",
+                minWidth: "640px",
+                marginRight: "50px"
+            }}>
+                <Options/>
+                <Pagination />
             </div>
-            <Pagination />
             <MainContentS>
                 {
                     toShow.length ? toShow.map((recipe) => (<RecipeCard recipe={recipe} key={recipe.Id} />)) : <Spinner />

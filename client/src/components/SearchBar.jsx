@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SearchBarS from "./styles/SearchBarStyle";
 import { useDispatch } from "react-redux";
-import { getAllRecipes, clearRecipes } from "../redux/actions/index";
+import { getAllRecipes, clearRecipes, changePage } from "../redux/actions/index";
 import { useHistory } from "react-router-dom";
 
 export default function SearchBar(){
@@ -19,6 +19,7 @@ export default function SearchBar(){
             <button onClick={()=> {
                 setInputValue("");
                 dispatch(clearRecipes());
+                dispatch(changePage(1));
                 dispatch(getAllRecipes(inputValue));
                 history.push("/home");
             }}>Search</button>

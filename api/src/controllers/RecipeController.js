@@ -25,7 +25,7 @@ function recipeApiParser(recipe) {
         health_score: recipe.healthScore,
         image: recipe.image,
         DietTypes: recipe.diets.map((diet)=> {
-            return {name: diet.charAt(0).toUpperCase() + diet.slice(1)}
+            return {name: diet}
         }),
         steps: recipe.analyzedInstructions.length ? recipe.analyzedInstructions[0].steps : []
     }
