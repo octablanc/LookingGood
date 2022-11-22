@@ -146,12 +146,6 @@ export default function PopUp({ deactive }){
                                     </div>
                                 )
                             }
-                            {/* <div className="step">
-                            <Step number={1} step={"Meter en el horno primero y luego esperar 2 horas en fuego bajo"}/>
-                            </div>
-                            <div className="step">
-                            <Step number={1} step={"Meter en el horno primero y luego esperar 2 horas en fuego bajo"}/>
-                            </div>  */}
                         </div>
                     </div>
                 </div>
