@@ -138,7 +138,6 @@ export default function PopUp({ deactive }){
                             <button onClick={()=> addStep()}>Save</button>
                         </div>
                         <div className="steps">
-
                             {
                                 recipe.steps.length && recipe.steps.map((step)=>
                                     <div className="step">
