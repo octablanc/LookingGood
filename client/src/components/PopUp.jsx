@@ -162,7 +162,7 @@ export default function PopUp({ deactive }){
                                 }
                             </div>
                         </div>
-
+ 
                         <div className="image" style={{backgroundPosition: "center", backgroundImage: `url(${recipe.image})`}}></div>
                     </div>
                                  
