@@ -6,8 +6,8 @@ import NavBar from './components/NavBar';
 import SearchBar from './components/SearchBar';
 import Home from './components/Home';
 import RecipeDetail from './components/RecipeDetail';
-import FormRecipe from './components/FormRecipe';
 import Options from './components/Options';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -20,6 +20,7 @@ function App() {
         <Header/>
         <NavBar/>
         <Home/>
+        <Footer/>
       </Route>
 
       <Route exact path='/test'>
@@ -31,12 +32,7 @@ function App() {
         <NavBar/>
         <SearchBar/>
         <RecipeDetail/>
-      </Route>
-
-      <Route exact path='/create'> 
-        <Header/>
-        <NavBar/>
-        <FormRecipe/>
+        <Footer/>
       </Route>
     </div>
   );

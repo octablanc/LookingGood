@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllRecipes } from "../redux/actions/index";
+import { changeOptions, getAllRecipes } from "../redux/actions/index";
 import SearchBar from "./SearchBar";
 import Pagination from "./Pagination";
 import MainContentS from "./styles/MainContent";
@@ -17,12 +17,12 @@ export default function Home() {
 
     useEffect(() => {
         dispatch(getAllRecipes());
+        dispatch(changeOptions({ ascendant: false, descending: false, diet: ""}));
     }, []);
 
     if(options.diet)
         recipes = recipes.filter((recipe)=> recipe.DietTypes.find((e)=> e.name === options.diet));
 
-    console.log(options.diet.charAt(0).toUpperCase() + options.diet.slice(1));
     console.log(recipes);
 
     if(options.ascendant)

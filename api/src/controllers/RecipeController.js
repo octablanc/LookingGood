@@ -24,8 +24,8 @@ function recipeApiParser(recipe) {
         dish_summary: recipe.summary,
         health_score: recipe.healthScore,
         image: recipe.image,
-        DietTypes: recipe.diets.map((diet)=> {
-            return {name: diet}
+        DietTypes: recipe.diets.map((diet) => {
+            return { name: diet }
         }),
         steps: recipe.analyzedInstructions.length ? recipe.analyzedInstructions[0].steps : []
     }
@@ -35,7 +35,13 @@ const getRecipesDB = async (name) => {
     console.log(API_KEY)
     return await Recipe.findAll(
         {
-
+            include: [
+                {
+                    model: DietType,
+                    attributes: ["name"],
+                    through: { attributes: [] }
+                }
+            ],
             where: name ? {
                 name: {
                     [Op.match]: Sequelize.fn('to_tsquery', name.split(" ").join(" & "))
@@ -68,13 +74,13 @@ const getRecipesAPI = async (name) => {
     return await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100` + (name ? "&query=" + name : ""))
         .then((response) => response.data.results)
         .then((data) => data.map((recipe) => recipeApiParser(recipe)))
-        .catch( ()=> []);
+        .catch(() => []);
 }
 
 const getRecipeByPkAPI = async (id) => {
     return await axios.get(`https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`)
         .then((response) => recipeApiParser(response.data))
-        .catch( ()=> false);
+        .catch(() => false);
 }
 
 const getRecipes = async (name) => {
@@ -89,7 +95,21 @@ const getRecipeByPK = async (id) => {
         return await getRecipeByPkAPI(id);
 }
 
+const saveRecipe = async ({ name, dish_summary, health_score, image, DietTypes, steps }) => {
+    const newRecipe = await Recipe.create({name, dish_summary, health_score, image});
+
+    const stepsToSave = steps.map((step)=> {
+        return {...step, recipeId: newRecipe.dataValues.Id}
+    })
+    
+    await newRecipe.setDietTypes(DietTypes);
+    await Step.bulkCreate(stepsToSave);
+
+    return newRecipe;
+}
+
 module.exports = {
     getRecipes,
-    getRecipeByPK
+    getRecipeByPK,
+    saveRecipe
 }

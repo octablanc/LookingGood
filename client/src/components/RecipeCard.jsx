@@ -11,7 +11,7 @@ export default function RecipeCard({recipe}){
 
     return (
         <RecipeCardS onClick={()=> handleClick()}>
-            <div className="picture" style={{background: `url(${recipe.image})no-repeat center`}}></div>
+            <div className="picture" style={{backgroundPosition: "center", backgroundImage: `url(${recipe.image})`}}></div>
             <div className="name">
                 <span>{recipe.name}</span>
             </div>

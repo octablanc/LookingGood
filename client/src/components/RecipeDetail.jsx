@@ -34,7 +34,7 @@ export default function RecipeDetail(){
                                     parse(recipe.dish_summary+"")
                                 }
                             </div>
-                            <div id="recipe-picture" style={{ background: `url( ${recipe.image})no-repeat center`}}></div>
+                            <div id="recipe-picture" style={{backgroundPosition: "center", backgroundImage: `url(${recipe.image})`}}></div>
                         </div>
 
                         <h3>Diets</h3>

@@ -3,6 +3,8 @@ import PopUpS from "./styles/PopUpStyle";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllDietTypes } from "../redux/actions/index";
 import Step from "./Step";
+import Error from "./Error";
+import axios from "axios";
 
 export default function PopUp({ deactive }){
     const dispatch = useDispatch();
@@ -10,15 +12,16 @@ export default function PopUp({ deactive }){
     const [ recipe, setRecipe ] = useState({
         name: "",
         image: "",
-        health_score: -1,
+        health_score: 0,
         dish_summary: "",
-        diet_types: [],
+        DietTypes: [],
         steps: []
     });
     const [ step, setStep ] = useState({
         number: 1,
         step: ""
     });
+    const [ error, setError ] = useState( {image: false, name: false, health_score: false});
 
     useEffect(()=> {
         document.querySelector('body').style.overflowY = "hidden";
@@ -36,36 +39,57 @@ export default function PopUp({ deactive }){
             ...recipe,
             [element.name] : element.value 
         });
+
+        if(element.name === "health_score")
+            setError({...error, [element.name]: true});
+        else
+            setError({...error, [element.name]: false});
     }
 
-    // Crear componente error, con un ( ! ) al hacerlse hover mostrar un error con el nombre que viene por prop
     function validateHealthScore(){
-        var number = parseInt(recipe.health_score);
-        if(Number.isInteger(number)){
-            if(number <= 100 && number >= 1)
-                return true;
-            else
-                return false;
+        if(recipe.health_score){
+            var number = parseInt(recipe.health_score);
+            if(Number.isInteger(number)){
+                if(number <= 100 && number >= 1)
+                {
+                    if(error.health_score)
+                        setError({...error, health_score: false});
+                    return <></>;
+                }
+                else{
+                    if(!error.health_score)
+                        setError({...error, health_score: true});
+                    return <Error message={"Enter a number between 1 and 100!"}/>;
+                }
+            }
+            else{
+                if(!error.health_score)
+                        setError({...error, health_score: true});
+                return <Error message={"Health Score can only be a number!"}/>;
+            }
         }
-        else
-            return false;
+        else{
+            if(!error.health_score)
+                setError({...error, health_score: true});
+            return <Error message={"Health Score is required!"}/>;
+        }
     }
 
     function addDiet(element){
         if(element.className === "diet"){
-            const newDietTypes = [...recipe.diet_types, element.id];
+            const newDietTypes = [...recipe.DietTypes, element.id];
             element.className = "active diet";
             setRecipe({
                 ...recipe,
-                diet_types: newDietTypes
+                DietTypes: newDietTypes
             });
         }
         else{
             element.className = "diet";
-            const newDietTypes = recipe.diet_types.filter((id)=> id != element.id);
+            const newDietTypes = recipe.DietTypes.filter((id)=> id != element.id);
             setRecipe({
                 ...recipe,
-                diet_types: newDietTypes
+                DietTypes: newDietTypes
             });
         }
     }
@@ -82,9 +106,28 @@ export default function PopUp({ deactive }){
             number: step.number+1,
             step: ""
         })
-    }
+    }    
 
-    // console.log(recipe);
+    function submit(){
+        let newError = error;
+
+        if(!recipe.image)
+            newError = {...newError, image: true};
+
+        if(!recipe.name)
+            newError = {...newError, name: true};
+
+        if(!recipe.health_score)
+            newError = {...newError, health_score: true};
+
+        if(newError.image || newError.name || newError.health_score)
+            setError(newError);
+        else
+            axios.post('http://localhost:3001/recipes', recipe)
+            .catch((msg)=> console.log(msg));
+
+        deactive();
+    }
 
     return (
         <PopUpS>
@@ -98,16 +141,25 @@ export default function PopUp({ deactive }){
                             <div className="field">
                                 <span className="title">Image URL</span>
                                 <input onChange={({target}) => handlerChange(target)} placeholder="URL here" name="image" autoComplete="off"/>
+                                {
+                                    error.image? <Error message={"URL is required!"}/> : <></>
+                                }
                             </div>
 
                             <div className="field">
-                                <span className="title no-first">Name</span>
+                                <span className="title">Name</span>
                                 <input onChange={({target}) => handlerChange(target)} placeholder="Name here" name="name" autoComplete="off"/>
+                                {
+                                    error.name? <Error message={"Name is required!"}/> : <></>
+                                }
                             </div>
 
                             <div className="field">
-                                <span className="title no-first">Health Score</span>
+                                <span className="title">Health Score</span>
                                 <input onChange={({target}) => handlerChange(target)} placeholder="Halth Score here" name="health_score" autoComplete="off"/>
+                                {
+                                    error.health_score && validateHealthScore()
+                                }
                             </div>
                         </div>
 
@@ -126,7 +178,6 @@ export default function PopUp({ deactive }){
                                 {
                                     diet_types && diet_types.map((diet)=> <span className="diet" id={diet.Id} onClick={({target})=> addDiet(target)}>{diet.name.charAt(0).toUpperCase() + diet.name.slice(1)}</span>)
                                 }
-                                <span className="diet" id={1} onClick={({target})=> addDiet(target)}>prueba</span>
                             </div>
                         </div>
                     </div>
@@ -147,6 +198,13 @@ export default function PopUp({ deactive }){
                             }
                         </div>
                     </div>
+
+                    <button 
+                        disabled={error.image || error.name || error.health_score} 
+                        className={error.image || error.name || error.health_score? "btn-create btn-disabled" : "btn-create"}
+                        type="submit" 
+                        onClick={()=> submit()} 
+                        >Create Recipe</button>
                 </div>
             </div>
         </PopUpS>

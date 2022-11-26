@@ -1,6 +1,6 @@
 const express = require('express');
 const recipeRouter = express.Router();
-const { getRecipes, getRecipeByPK } = require('../controllers/RecipeController');
+const { getRecipes, getRecipeByPK, saveRecipe } = require('../controllers/RecipeController');
 
 recipeRouter.get('/', async (req, res)=>{
     try {
@@ -24,6 +24,20 @@ recipeRouter.get('/:id', async (req, res) => {
         if(result)
             return res.send(result);
         throw new Error('No recipe found');
+    } catch (error) {
+        return res.status(404).send({ error: error.message });
+    }
+});
+
+recipeRouter.post('/', async (req, res)=> {
+    try {
+        const recipe = req.body;
+        console.log(req.body);
+        const result = await saveRecipe(recipe);
+        
+        if(result)
+            return res.send(result);
+        throw new Error('There was an error trying to save the recipe');
     } catch (error) {
         return res.status(404).send({ error: error.message });
     }

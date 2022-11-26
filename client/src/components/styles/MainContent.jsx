@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const MainContentS = styled.div`
     margin-top: 40px;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
     margin-left: 100px;
     margin-right: 100px;
     padding-left: 40px;

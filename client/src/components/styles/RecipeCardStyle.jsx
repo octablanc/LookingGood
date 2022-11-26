@@ -24,6 +24,7 @@ const RecipeCardS = styled.div`
         border-top-right-radius: 5px;
         width: 100%;
         height: 150px;
+        background-size: cover;
     }
 
     .name {

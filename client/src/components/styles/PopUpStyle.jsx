@@ -6,7 +6,7 @@ const PopUpS = styled.div`
     align-items: center;
     position: fixed;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background-color: #00000051;
     top: 0px;
     z-index: 999;
@@ -50,9 +50,11 @@ const PopUpS = styled.div`
     }
 
     .field {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        margin-bottom: 10px;
     }
 
     .title {
@@ -63,7 +65,6 @@ const PopUpS = styled.div`
 
     input {
         width: 90%;
-        /* margin-top: px; */
         padding: 10px 20px 10px 20px;
         background-color: #292929;
         color: white;
@@ -198,6 +199,7 @@ const PopUpS = styled.div`
         }
         
         .input {
+            width: 100%;
             position: relative;
             margin-bottom: 10px;
             button {
@@ -205,8 +207,8 @@ const PopUpS = styled.div`
                 outline: none;
                 padding: 10px 20px 12px 20px;
                 position: absolute;
-                top: 24px;
-                right: 25px;
+                top: 39%;
+                right: 2.7%;
                 background-color: #339e85;
                 color: white;
                 border-radius: 30pc;
@@ -226,7 +228,6 @@ const PopUpS = styled.div`
             overflow-y: visible;
             font-size: 14px;
             height: 130px;
-            margin-right: -10px;
             border: #b3b2b299 solid 2px;
             box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
             border-radius: 30px;
@@ -242,7 +243,26 @@ const PopUpS = styled.div`
                 }
             }
         }
-    } 
+    }
+
+    .btn-create {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border-radius: 30px;
+        background-color: #339e85;
+        color: white;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+
+        :hover {
+            background-color: #2ccea3;
+            box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+        }
+    }
 
     .btn-close {
         position: absolute;
@@ -250,6 +270,10 @@ const PopUpS = styled.div`
         right: 20px;
         font-size: 30px;
         cursor: pointer;
+    }
+
+    .btn-disabled {
+        cursor: not-allowed;
     }
 `;
 

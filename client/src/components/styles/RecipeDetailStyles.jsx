@@ -25,6 +25,7 @@ const RecipeDetailS = styled.div`
     #recipe-header {
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
     }
 
     a { text-decoration: none; font-weight: bolder;}
