@@ -165,7 +165,7 @@ export default function PopUp({ deactive }){
 
                         <div className="image" style={{backgroundPosition: "center", backgroundImage: `url(${recipe.image})`}}></div>
                     </div>
-                                
+                                 
                     <div className="second-content">
                         <div className="dish-summary">
                             <span className="title" style={{marginBottom: "5px"}}>Dish Summary</span>
