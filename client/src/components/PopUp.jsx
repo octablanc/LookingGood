@@ -171,7 +171,7 @@ export default function PopUp({ deactive }){
                             <span className="title" style={{marginBottom: "5px"}}>Dish Summary</span>
                             <textarea onChange={({target}) => handlerChange(target)} className=".boxsizingBorder" placeholder="Dish Summuary here.." name="dish_summary"/>
                         </div>
-
+ 
                         <div className="diet-type-conteiner">
                             <span className="title" style={{marginBottom: "5px"}}>Diets</span>
                             <div className="diet-type">
