@@ -128,7 +128,7 @@ export default function PopUp({ deactive }){
             .catch((msg)=> console.log(msg));
         }
     }
-    
+     
     return (
         <PopUpS>
             <span className="btn-close" onClick={()=> deactive()}>x</span>
