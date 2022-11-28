@@ -122,11 +122,11 @@ export default function PopUp({ deactive }){
 
         if(newError.image || newError.name || newError.health_score)
             setError(newError);
-        else
+        else{
+            deactive();
             axios.post('http://localhost:3001/recipes', recipe)
             .catch((msg)=> console.log(msg));
-
-        deactive();
+        }
     }
 
     return (
