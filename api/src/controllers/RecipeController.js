@@ -49,7 +49,7 @@ const getRecipesDB = async (name) => {
                 } : {}
             }
         );
-     
+    
         if(!name && !result.length){
             const recipesAPI = await getRecipesAPI();
 
