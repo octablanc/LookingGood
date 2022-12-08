@@ -6,17 +6,18 @@ import { changeOptions, clearRecipes, getAllRecipes, getAllDietTypes } from "../
 
 export default function Options(){
     const [ options, setOptions ] = useState(useSelector((state)=> state.options));
+    const [ changed, setChanged ] = useState(true);
     const [ previousElement, setPreviousElement ] = useState({});
     const diet_types = useSelector((state)=> state.diet_types);
     const dispatch = useDispatch();
 
     useEffect(()=> {
         dispatch(getAllDietTypes());
+
     }, [dispatch]);
 
     function handlerOrder(options){
         dispatch(changeOptions(options));
-        setOptions(options);
     }
 
     function handlerFilter(element){
@@ -30,7 +31,6 @@ export default function Options(){
         else
             element.className = "";
 
-        
         dispatch(changeOptions({
             ...options,
             diet: element.className && element.id
@@ -42,13 +42,12 @@ export default function Options(){
         });
     }
 
-    console.log(options);
-
     return (
         <OptionsS>
-            <span>Order</span>
+            <span>Home Options</span>
             <ul className="list">
-                <hr />
+                <hr style={{ marginTop: "-6px" }}/>
+                <p>Order</p>
                 <li 
                     className={ options.ascendant? "active":"" } 
                     onClick={()=> handlerOrder({
@@ -65,10 +64,11 @@ export default function Options(){
                         descending: !options.descending
                     })}
                 >Descending</li>
-                <p>Diets</p>
+                <hr />
+                <p>Filter by diets</p>
                 <div id="diets">
                     {
-                        diet_types && diet_types.map((diet)=> <li key={diet.Id} id={diet.name} onClick={({target})=> handlerFilter(target)}>{diet.name.charAt(0).toUpperCase() + diet.name.slice(1)}</li>)
+                        diet_types.length? diet_types.map((diet)=> <li key={diet.Id} id={diet.name} onClick={({target})=> handlerFilter(target)}>{diet.name.charAt(0).toUpperCase() + diet.name.slice(1)}</li>) : <></>
                     }
                 </div>
             </ul>

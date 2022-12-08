@@ -6,25 +6,47 @@ const {
 } = process.env;
 
 async function getDiets() {
-    var result = await DietType.findAll();
 
-    if(!result.length) {
-        const dietsAPI = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=7a1ebd0027744c6ba5ee4eac4a66c827&number=5000&addRecipeInformation=true`))
-            .data.results.map(el => el.diets);
+    try {
+        var result = await DietType.findAll();
+    
+        if(!result.length) {
+            const dietsAPI = (await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&number=5000&addRecipeInformation=true`))
+                .data.results.map(el => el.diets);
+    
+            var dietsToSave = [];
+            dietsAPI.forEach((diets) => {
+                diets.forEach((diet) => {
+                    if (!dietsToSave.includes(diet))
+                        dietsToSave.push(diet);
+                })
+            });
+    
+            var result = await DietType.bulkCreate( dietsToSave.map((dieta) => { return { name: dieta } }) );
+        }
+        
+        // console.log( await DietType.findOne({where: { name: "gluten free" }}))
 
-        var dietsToSave = [];
-        dietsAPI.forEach((diets) => {
-            diets.forEach((diet) => {
-                if (!dietsToSave.includes(diet))
-                    dietsToSave.push(diet);
-            })
-        });
-
-        var result = DietType.bulkCreate( dietsToSave.map((dieta) => { return { name: dieta } }) );
-        /// agregar las que faltan de la pagina
+        return result;
+    } catch (error) {
+        return { message: error.message}
     }
-
-    return result;
 }
 
-module.exports = getDiets;
+async function updateDiet(Id, name){
+    try {
+        const diet = await DietType.findByPk(Id);
+        
+        await diet.update({name});
+        await diet.save();
+
+        return diet;
+    } catch (error) {
+        return {message: error.message};
+    }
+}
+
+module.exports = {
+    updateDiet,
+    getDiets
+};

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PopUpS from "./styles/PopUpStyle";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllDietTypes } from "../redux/actions/index";
+import { getAllDietTypes, getAllRecipes, clearRecipes } from "../redux/actions/index";
 import Step from "./Step";
 import Error from "./Error";
 import axios from "axios";
@@ -126,6 +126,8 @@ export default function PopUp({ deactive }){
             deactive();
             axios.post('http://localhost:3001/recipes', recipe)
             .catch((msg)=> console.log(msg));
+            dispatch(clearRecipes());
+            dispatch(getAllRecipes());
         }
     }
       
@@ -176,7 +178,7 @@ export default function PopUp({ deactive }){
                             <span className="title" style={{marginBottom: "5px"}}>Diets</span>
                             <div className="diet-type">
                                 {
-                                    diet_types && diet_types.map((diet)=> <span className="diet" id={diet.Id} onClick={({target})=> addDiet(target)}>{diet.name.charAt(0).toUpperCase() + diet.name.slice(1)}</span>)
+                                    diet_types.length? diet_types.map((diet)=> <span className="diet" id={diet.Id} onClick={({target})=> addDiet(target)}>{diet.name.charAt(0).toUpperCase() + diet.name.slice(1)}</span>) : <></>
                                 }
                             </div>
                         </div>
@@ -190,11 +192,11 @@ export default function PopUp({ deactive }){
                         </div>
                         <div className="steps">
                             {
-                                recipe.steps.length && recipe.steps.map((step)=>
+                                recipe.steps.length? recipe.steps.map((step)=>
                                     <div className="step">
                                         <Step number={step.number} step={step.step}/>
                                     </div>
-                                )
+                                ): <></>
                             }
                         </div>
                     </div>

@@ -8,11 +8,9 @@ recipeRouter.get('/', async (req, res)=>{
 
         const result = await getRecipes(name);
 
-        if(result.length)
-            return res.send(result);
-        throw new Error('No recipe found');
+        return res.send(result.length ? result : { error: 'No recipe found'});
     } catch (error) {
-        return res.status(404).send({ error: error.message});
+        return res.status(404).send();
     }
 });
 

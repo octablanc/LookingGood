@@ -15,6 +15,8 @@ export default function Home() {
     var pagina = useSelector((state) => state.page);
     var toShow = [];
 
+    const [page, setPage] = useState(1);
+
     useEffect(() => {
         dispatch(getAllRecipes());
         dispatch(changeOptions({ ascendant: false, descending: false, diet: ""}));
@@ -22,8 +24,6 @@ export default function Home() {
 
     if(options.diet)
         recipes = recipes.filter((recipe)=> recipe.DietTypes.find((e)=> e.name === options.diet));
-
-    console.log(recipes);
 
     if(options.ascendant)
         recipes = recipes.sort((a, b) => a.name > b.name? 1: -1);

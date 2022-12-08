@@ -19,36 +19,50 @@ function recipeApiParser(recipe) {
             recipe.diets.push("gluten free");
 
     return {
-        Id: recipe.id,
         name: recipe.title,
         dish_summary: recipe.summary,
         health_score: recipe.healthScore,
         image: recipe.image,
-        DietTypes: recipe.diets.map((diet) => {
-            return { name: diet }
-        }),
+        DietTypes: [],
         steps: recipe.analyzedInstructions.length ? recipe.analyzedInstructions[0].steps : []
     }
 }
 
 const getRecipesDB = async (name) => {
     console.log(API_KEY)
-    return await Recipe.findAll(
-        {
-            include: [
-                {
-                    model: DietType,
-                    attributes: ["name"],
-                    through: { attributes: [] }
-                }
-            ],
-            where: name ? {
-                name: {
-                    [Op.match]: Sequelize.fn('to_tsquery', name.split(" ").join(" & "))
-                }
-            } : {}
+
+    try {
+        
+        const result = await Recipe.findAll(
+            {
+                include: [
+                    {
+                        model: DietType,
+                        attributes: ["name"],
+                        through: { attributes: [] }
+                    }
+                ],
+                where: name ? {
+                    name: {
+                        [Op.match]: Sequelize.fn('to_tsquery', name.split(" ").join(" & "))
+                    }
+                } : {}
+            }
+        );
+     
+        if(!name && !result.length){
+            const recipesAPI = await getRecipesAPI();
+
+            const recipePormises = recipesAPI.map((recipe)=> saveRecipe(recipe));
+            console.log(await Promise.all(recipePormises));
+
+            return await getRecipesDB(name);
         }
-    );
+    
+        return result;
+    } catch (error) {
+        return { error: error.message };
+    }
 }
 
 const getRecipeByPkDB = async (id) => {
@@ -71,10 +85,10 @@ const getRecipeByPkDB = async (id) => {
 }
 
 const getRecipesAPI = async (name) => {
-    return await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=100` + (name ? "&query=" + name : ""))
+    return await axios.get(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${API_KEY}&addRecipeInformation=true&number=20` + (name ? "&query=" + name : ""))
         .then((response) => response.data.results)
         .then((data) => data.map((recipe) => recipeApiParser(recipe)))
-        .catch(() => []);
+        .catch((error) => [ {error: error.message} ]);
 }
 
 const getRecipeByPkAPI = async (id) => {
@@ -84,8 +98,9 @@ const getRecipeByPkAPI = async (id) => {
 }
 
 const getRecipes = async (name) => {
-    const result = await Promise.all([getRecipesDB(name), getRecipesAPI(name)])
-    return [...result[0], ...result[1]];
+    // const result = await Promise.all([getRecipesDB(name), getRecipesAPI(name)])
+    // return [...result[0], ...result[1]];
+    return await getRecipesDB(name);
 }
 
 const getRecipeByPK = async (id) => {
@@ -96,16 +111,20 @@ const getRecipeByPK = async (id) => {
 }
 
 const saveRecipe = async ({ name, dish_summary, health_score, image, DietTypes, steps }) => {
-    const newRecipe = await Recipe.create({name, dish_summary, health_score, image});
-
-    const stepsToSave = steps.map((step)=> {
-        return {...step, recipeId: newRecipe.dataValues.Id}
-    })
+    try {
+        const newRecipe = await Recipe.create({name, dish_summary, health_score, image});
     
-    await newRecipe.setDietTypes(DietTypes);
-    await Step.bulkCreate(stepsToSave);
-
-    return newRecipe;
+        const stepsToSave = steps.map((step)=> {
+            return {...step, recipeId: newRecipe.dataValues.Id}
+        })
+        
+        DietTypes.length && await newRecipe.setDietTypes(DietTypes);
+        await Step.bulkCreate(stepsToSave);
+    
+        return newRecipe;
+    } catch (error) {
+        return { error: error.message }
+    }
 }
 
 module.exports = {

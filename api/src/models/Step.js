@@ -14,7 +14,7 @@ module.exports = (Sequelize)=> {
         },
 
         step: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: false
         }
     },

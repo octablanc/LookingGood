@@ -1,6 +1,6 @@
 const express = require('express');
 const DietTypeRouter = express.Router();
-const getDiets = require('../controllers/DietTypeController');
+const {getDiets, updateDiet} = require('../controllers/DietTypeController');
 
 DietTypeRouter.get('/', async (req, res)=>{
     try {
@@ -10,5 +10,17 @@ DietTypeRouter.get('/', async (req, res)=>{
         return res.status(404).send({ message: error.message });
     }
 });
+
+DietTypeRouter.put('/:id', async (req, res)=>{
+    try {
+        const { name } = req.body;
+        const { id }  = req.params;
+        
+        const dietUpdated = await updateDiet(id, name);
+        return res.send(dietUpdated);
+    } catch (error) {
+        return res.statusCode(400).send({ message: error.message });
+    }
+})
 
 module.exports = DietTypeRouter;
